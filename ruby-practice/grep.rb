@@ -1,3 +1,4 @@
+#this basically works, but I don't understand the gets method so it can't read in the file name correctly
 puts "Enter a file name: "
 fileName = gets
 puts fileName
