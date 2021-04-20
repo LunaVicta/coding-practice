@@ -1,8 +1,12 @@
 class Tree
     attr_accessor :children, :node_name
-    def initialize(name, children=[])
-        @children = children
-        @node_name = name
+    def initialize(hashmap)
+        @children = []
+        hashmap.each_pair do
+            |key, value|
+            @node_name = key
+            value.each_pair { |k,v| @children.append(Tree.new({k => v}))}
+        end
     end
 
     def visit_all(&block)
@@ -14,11 +18,5 @@ class Tree
         block.call self
     end
 end
-
-ruby_tree = Tree.new("Ruby", [Tree.new("Reia"), Tree.new("MacRuby")])
-puts "Visiting a node."
-ruby_tree.visit {|node| puts node.node_name}
-puts
-
-puts "Visiting entire tree."
-ruby_tree.visit_all {|node| puts node.node_name}
+family = Tree.new({"grandpa"=>{"dad"=>{"child 1"=>{}, "child 2"=>{}}, "uncle"=>{"child 3"=>{}, "child 4"=>{}}}})
+family.visit_all {|node| puts node.node_name}
