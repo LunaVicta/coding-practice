@@ -9,7 +9,7 @@ module ActsAsCsv
       end
     end
     
-    module InstanceMethods   
+    module InstanceMethods
       def read
         @csv_contents = []
         filename = self.class.to_s.downcase + '.txt'
@@ -19,6 +19,21 @@ module ActsAsCsv
         file.each do |row|
           @csv_contents << row.chomp.split(', ')
         end
+      end
+
+      class CsvRow
+          def initialize(headers, contents)
+              @headers = headers
+              @row_contents = contents
+          end
+          def self.method_missing name, *args
+              h = name.to_s
+              @row_contents[@headers.index(h)]
+          end
+      end
+
+      def each(&block)
+           
       end
       
       attr_accessor :headers, :csv_contents
